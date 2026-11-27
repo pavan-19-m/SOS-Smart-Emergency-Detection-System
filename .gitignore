@@ -1,0 +1,67 @@
+# Python & Virtual Environments
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Secrets & Environment Files
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.p12
+*.jks
+*.keystore
+serviceAccountKey.json
+firebase-adminsdk-*.json
+google-services.json
+GoogleService-Info.plist
+key.properties
+
+# Large / Downloaded Raw Datasets & Reproducible Binary Arrays
+data_science/datasets/raw/*.zip
+data_science/datasets/raw/UCI_HAR_Dataset/
+data_science/datasets/raw/UCI HAR Dataset/
+data_science/datasets/raw/__MACOSX/
+data_science/datasets/raw/._*
+data_science/datasets/raw/*.npz
+data_science/datasets/cleaned/*.npz
+data_science/datasets/raw/SisFall_dataset/
+
+# Flutter / Dart / Android Build Artifacts
+mobile_app/.dart_tool/
+mobile_app/.packages
+mobile_app/build/
+mobile_app/.flutter-plugins
+mobile_app/.flutter-plugins-dependencies
+mobile_app/android/.gradle/
+mobile_app/android/local.properties
+mobile_app/android/app/debug/
+mobile_app/android/app/release/
+mobile_app/ios/Pods/
+mobile_app/ios/.symlinks/
+*.apk
+*.aab
+*.ipa
+
+# Node / Firebase Functions
+backend/functions/node_modules/
+backend/functions/lib/
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
