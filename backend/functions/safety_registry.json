@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "datasets": [
+    {
+      "id": "bengaluru_btp_station_crashes_2023",
+      "title": "Bengaluru Road Crashes Data — BTP station-wise 2023",
+      "publisher": "Bengaluru Traffic Police via OpenCity.in",
+      "sourceUrl": "https://data.opencity.in/dataset/bengaluru-road-crashes-data",
+      "downloadUrl": "https://newdata.opencity.in/dataset/94e986d6-7836-4a8e-aa3f-273bee4ea795/resource/8f0f281c-2cb6-4491-ac76-d1874ce38583/download/abc5af52-08a7-4435-8ba1-12b99f62ee28.csv",
+      "sourceType": "periodic_official_aggregate",
+      "format": "CSV",
+      "reportingPeriod": "2023",
+      "publishedAt": "2025-11-25",
+      "lastDownloadedAt": null,
+      "lastSuccessfulUpdateAt": null,
+      "geography": "Bengaluru Traffic Police station / subdivision / zone",
+      "spatialPrecision": "police_station_aggregate; no coordinates",
+      "license": "Other (Public Domain), as catalogued by OpenCity.in",
+      "status": "catalogued_download_blocked",
+      "expectedColumns": [
+        "Zone",
+        "Sub-division",
+        "Station",
+        "2023 - Fatal Cases",
+        "2023 - Killed People",
+        "2023 - Non-Fatal",
+        "2023 - Injured People",
+        "2023 - Total Cases"
+      ],
+      "limitations": [
+        "Aggregate station totals, not incident records",
+        "No GPS coordinates, dates, or times",
+        "Station area sizes and exposure are not normalized",
+        "Automated download host returned a Cloudflare JavaScript challenge during this run"
+      ]
+    },
+    {
+      "id": "bengaluru_bcp_crime_2023",
+      "title": "Bengaluru Crime Data - 2023 — Bengaluru Total Crimes 2023",
+      "publisher": "Bengaluru City Police via OpenCity.in",
+      "sourceUrl": "https://data.opencity.in/dataset/bengaluru-crime-data-2023",
+      "downloadUrl": "https://newdata.opencity.in/dataset/d253f099-2766-4cb8-8732-9cf996f2ffde/resource/43553ce7-ea93-4394-8da2-c84afa8f1bea/download/604a3fc2-e44a-45ce-ab25-3348322bd041.csv",
+      "sourceType": "periodic_official_aggregate",
+      "format": "CSV",
+      "reportingPeriod": "2021-2023",
+      "publishedAt": "2025-11-25",
+      "lastDownloadedAt": null,
+      "lastSuccessfulUpdateAt": null,
+      "geography": "Bengaluru city; some companion tables by division",
+      "spatialPrecision": "city_or_division_aggregate; no coordinates",
+      "license": "Other (Public Domain), as catalogued by OpenCity.in",
+      "status": "catalogued_download_blocked",
+      "expectedColumns": [
+        "Type of Crime",
+        "2021 Reported",
+        "2021 Detected",
+        "2022 Reported",
+        "2022 Detected",
+        "2023 Reported",
+        "2023 Detected"
+      ],
+      "limitations": [
+        "FIR count aggregates, not individual incidents",
+        "No location, coordinates, or incident timestamps in the total-crimes resource",
+        "Crime categories and counting definitions are those published by BCP",
+        "Automated download host returned a Cloudflare JavaScript challenge during this run"
+      ]
+    },
+    {
+      "id": "karnataka_crime_2024_district",
+      "title": "Karnataka - Crime Data 2024 — District-wise IPC crimes",
+      "publisher": "Karnataka State Police via OpenCity.in",
+      "sourceUrl": "https://data.opencity.in/dataset/karnataka-crime-data-2024",
+      "downloadUrl": "https://newdata.opencity.in/dataset/e2efa3e0-cb3a-4d5b-91ae-e08dcb471267/resource/3f1bbc2e-e7a0-450f-8831-6b31c140859c/download/2a1e057f-3b0b-42e4-ae4b-6cdb49902d31.csv",
+      "sourceType": "periodic_official_aggregate",
+      "format": "CSV",
+      "reportingPeriod": "2024",
+      "publishedAt": "2025-11-25",
+      "lastDownloadedAt": null,
+      "lastSuccessfulUpdateAt": null,
+      "geography": "Karnataka districts and commissionerates/units",
+      "spatialPrecision": "district_or_commissionerate_aggregate; no coordinates",
+      "license": "Other (Public Domain), as catalogued by OpenCity.in",
+      "status": "catalogued_not_ingested",
+      "expectedColumns": [
+        "DISTRICT/UNITS",
+        "ROBBERY",
+        "BURGLARY-DAY",
+        "BURGLARY-NIGHT",
+        "THEFT"
+      ],
+      "limitations": [
+        "Not appropriate for Bengaluru street-level hotspots",
+        "Includes district/unit aggregate counts only"
+      ]
+    },
+    {
+      "id": "karnataka_crime_2025_commissionerate",
+      "title": "Karnataka Crime Data 2025 — District and Commissionerate-wise Crimes",
+      "publisher": "Karnataka State Police via OpenCity.in",
+      "sourceUrl": "https://data.opencity.in/dataset/karnataka-crime-data-2025",
+      "downloadUrl": "https://data.opencity.in/dataset/41789466-ddbc-4ea2-8e07-b48521a7f638/resource/90ef5e20-0e55-41d9-8a63-aceff7205d61/download/ka-district-wise-2025.csv",
+      "sourceType": "periodic_official_aggregate",
+      "format": "CSV",
+      "reportingPeriod": "2025",
+      "publishedAt": "2026-02-04",
+      "lastDownloadedAt": null,
+      "lastSuccessfulUpdateAt": null,
+      "geography": "Karnataka districts and commissionerates/units",
+      "spatialPrecision": "district_or_commissionerate_aggregate; no coordinates",
+      "license": "Other (Public Domain), as catalogued by OpenCity.in",
+      "status": "catalogued_not_ingested",
+      "expectedColumns": [
+        "Districts/Units",
+        "IPC/BNS Crimes",
+        "SLL Crimes"
+      ],
+      "limitations": [
+        "Not street- or incident-level",
+        "IPC/BNS and SLL totals are not directly comparable to 2023 BCP categories"
+      ]
+    },
+    {
+      "id": "bigrs_btp_road_safety_report_2023",
+      "title": "BIGRS 2023 Bengaluru Traffic Police Road Safety Report",
+      "publisher": "Bengaluru Traffic Police, Karnataka State Road Safety Authority, BIGRS/Vital Strategies",
+      "sourceUrl": "https://data.opencity.in/dataset/7b6fab44-c380-4359-a8a9-01c8787acd57/resource/6c425f17-b19b-402f-a638-6b9cae856025/download/bigrs_2023_btp_roadsafetyreport_final_compressed.pdf",
+      "downloadUrl": "https://data.opencity.in/dataset/7b6fab44-c380-4359-a8a9-01c8787acd57/resource/6c425f17-b19b-402f-a638-6b9cae856025/download/bigrs_2023_btp_roadsafetyreport_final_compressed.pdf",
+      "sourceType": "historical_report",
+      "format": "PDF",
+      "reportingPeriod": "2023 (fatal crashes); high-risk location tables use 2021-2023",
+      "publishedAt": null,
+      "lastDownloadedAt": null,
+      "lastSuccessfulUpdateAt": null,
+      "geography": "Bengaluru city, BTP divisions, police-station areas, named high-risk locations/corridors",
+      "spatialPrecision": "published maps and named place/road tables; no reusable incident coordinate table in report",
+      "license": "Not stated in inspected report/catalogue metadata",
+      "status": "inspected_online_report",
+      "limitations": [
+        "Fatal crash analysis, not all crashes",
+        "Do not combine counts with station-wise crash totals without reconciling definitions",
+        "Map graphics are not coordinate data"
+      ]
+    }
+  ]
+}

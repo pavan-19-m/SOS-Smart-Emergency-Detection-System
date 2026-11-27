@@ -1,0 +1,18 @@
+{
+  "generatedAt": "2026-11-27T16:31:02Z",
+  "dataStatus": "historical",
+  "availability": "unavailable",
+  "message": "No verified source files have been processed. Safety records are not live.",
+  "accidents": {
+    "sourceId": "bengaluru_btp_station_crashes_2023",
+    "reportingPeriod": "2023",
+    "geographicPrecision": "police station aggregate; no coordinates",
+    "records": []
+  },
+  "crimes": {
+    "sourceId": "bengaluru_bcp_crime_2023",
+    "reportingPeriod": "2021-2023",
+    "geographicPrecision": "city aggregate; no coordinates",
+    "records": []
+  }
+}

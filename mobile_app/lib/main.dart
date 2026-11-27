@@ -15,6 +15,7 @@ import 'screens/onboarding_screens.dart';
 import 'screens/profile_notifications_screens.dart';
 import 'screens/settings_screens.dart';
 import 'screens/sos_screen.dart';
+import 'screens/safety_map_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -67,6 +68,7 @@ class SosenseApp extends StatelessWidget {
                   const PermissionCenterScreen(),
               AppRoutes.demoCenter: (_) => const DemoCenterScreen(),
               AppRoutes.aboutProject: (_) => const AboutProjectScreen(),
+              AppRoutes.safetyMap: (_) => const SafetyMapScreen(),
             },
           );
         },

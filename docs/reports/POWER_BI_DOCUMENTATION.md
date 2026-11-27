@@ -22,3 +22,21 @@
 3. Import `sosense_theme.json` via **View -> Themes -> Browse for themes**.
 4. Create relationships: `dim_date[date_key]` -> `fact_incidents[timestamp_utc]` (date part), `fact_incidents[incident_id]` -> `fact_notifications[incident_id]`, `fact_sensor_events[window_id]` -> `fact_incidents[window_id]`.
 5. Copy measures from `DAX_Measures.dax` into a dedicated `_Measures` table and build the 5 report pages.
+
+## Safety Intelligence extension (aggregate data only)
+
+The pipeline prepares `analytics/safety/accident_station_summary.csv`, `crime_city_summary.csv`, and `data_quality.json` for a separate safety report. Import the two CSVs as `SafetyAccidents` and `SafetyCrimes`. Do not create map visuals from these sources: the crash table is police-station aggregate and crime is citywide aggregate, with no coordinates or polygons. Use bar/table visuals and add reporting-period, source and precision text from the registry. Do not title a relative station count band as a “danger score.” The current exports contain headers and no records because publisher CSV downloads were blocked; do not infer zero incidents from empty files.
+
+Suggested report pages: Safety Overview (historical status and source period), Accident Stations (recorded counts and severity), Crime Categories (reported/detected counts by year), and Data Quality (missingness, schema, source freshness and spatial precision). The BIGRS report findings are contextual and must remain separate from the CSV-derived totals. No `.pbix` or `.pbit` has been created.
+
+Example DAX for imported aggregate tables:
+
+```DAX
+Recorded Crash Cases = SUM(SafetyAccidents[totalCases])
+Fatal Crash Cases = SUM(SafetyAccidents[fatalCases])
+People Killed = SUM(SafetyAccidents[peopleKilled])
+Reported Crime Count 2023 = SUM(SafetyCrimes[reported2023])
+Detected Crime Count 2023 = SUM(SafetyCrimes[detected2023])
+```
+
+These measures summarize reported historical source counts; they are not exposure-adjusted rates or risk predictions.

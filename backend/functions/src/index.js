@@ -4,8 +4,11 @@
 
 const admin = require("firebase-admin");
 const { onDocumentCreated, onDocumentUpdated } = require("firebase-functions/v2/firestore");
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onCall, onRequest, HttpsError } = require("firebase-functions/v2/https");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
+const safetySnapshot = require("../safety_summary.json");
+const safetyRegistry = require("../safety_registry.json");
+const { handleSafetyRequest } = require("./safetyService");
 
 const {
   handleIncidentCreated,
@@ -14,6 +17,17 @@ const {
 } = require("./emergencyService");
 
 admin.initializeApp();
+
+// Public, aggregate historical data only. This endpoint never accepts or stores
+// user GPS coordinates and does not expose incident-level records.
+exports.safetyData = onRequest({ cors: true }, (request, response) => {
+  response.set("Cache-Control", "public, max-age=300, stale-while-revalidate=3600");
+  response.set("X-Content-Type-Options", "nosniff");
+  const path = request.path.replace(/\/$/, "");
+  const result = handleSafetyRequest({ method: request.method, path, snapshot: safetySnapshot, registry: safetyRegistry });
+  if (result.status === 405) response.set("Allow", "GET");
+  response.status(result.status).json(result.body);
+});
 
 exports.onIncidentCreated = onDocumentCreated("incidents/{incidentId}", async (event) => {
   const snap = event.data;

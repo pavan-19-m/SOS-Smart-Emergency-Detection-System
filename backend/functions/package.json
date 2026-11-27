@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "node --test test/*.test.js",
-    "lint": "node --check src/index.js src/emergencyService.js src/validators.js"
+    "lint": "node --check src/index.js src/safetyService.js src/emergencyService.js src/validators.js"
   },
   "dependencies": {
     "firebase-admin": "^12.7.0",

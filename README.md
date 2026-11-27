@@ -20,6 +20,7 @@
   - 4th-order zero-phase Butterworth filtering, 20 time-domain features, strict subject-disjoint splits (`train=28 subjects`, `test=12 subjects`, `0 overlap`), `GroupKFold` tuning, Rule-Based Baseline vs Logistic Regression vs Decision Tree vs Random Forest vs XGBoost, plus unsupervised Isolation Forest.
 - **Track B — Data Science & Data Analytics (`analytics/`):**
   - Relational SQLite warehouse (`analytics/sosense_analytics.db`), 12 executed SQL queries (`analytics/sql/analytics_queries.sql`), executed EDA Jupyter Notebook (`data_science/notebooks/01_exploratory_data_analysis.ipynb`), clean Power BI CSV exports (`analytics/exports/`), DAX measures (`analytics/powerbi/DAX_Measures.dax`), and Power Query M scripts.
+- **Safety Intelligence (`safety/`, `backend/functions/`, `mobile_app/`):** Verified-source ingestion and validation for official Bengaluru police crash totals and FIR crime aggregates, historical-only safety overview, and source freshness/precision disclosures. The 2023 crash CSV is station-level (not incident coordinates); Bengaluru crime 2023 is city totals by crime type and division for some categories. The map does not fabricate pin locations. See [Safety Intelligence](docs/SAFETY_HOTSPOT_DOCUMENTATION.md).
 
 ---
 
@@ -136,3 +137,4 @@ flutter build apk --release
 - [SQL Analytics](docs/reports/SQL_ANALYTICS.md) | [Power BI Documentation](docs/reports/POWER_BI_DOCUMENTATION.md)
 - [Testing Report](docs/reports/TESTING_REPORT.md) | [Firebase Setup](docs/FIREBASE_SETUP.md) | [Deployment Guide](docs/DEPLOYMENT_GUIDE.md)
 - [User Guide](docs/USER_GUIDE.md) | [Limitations & Future Scope](docs/LIMITATIONS_AND_FUTURE_SCOPE.md) | [Career Portfolio Deliverables](docs/PORTFOLIO_CAREER_DELIVERABLES.md)
+- [Safety Intelligence](docs/SAFETY_HOTSPOT_DOCUMENTATION.md) | [Source Research](docs/DATA_SOURCE_RESEARCH.md) | [Geospatial Method](docs/GEOSPATIAL_ANALYSIS_METHODOLOGY.md) | [Refresh Guide](docs/DATA_REFRESH_GUIDE.md)

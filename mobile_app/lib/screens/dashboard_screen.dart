@@ -199,6 +199,12 @@ class _HomeOverviewTab extends StatelessWidget {
                     Navigator.pushNamed(context, AppRoutes.emergencyProfile),
               ),
               _ModuleTile(
+                icon: Icons.map_outlined,
+                title: 'Safety Map',
+                subtitle: 'Historical awareness data',
+                onTap: () => Navigator.pushNamed(context, AppRoutes.safetyMap),
+              ),
+              _ModuleTile(
                 icon: Icons.info_outline,
                 title: 'About SOSense',
                 subtitle: 'ML & disclaimers',

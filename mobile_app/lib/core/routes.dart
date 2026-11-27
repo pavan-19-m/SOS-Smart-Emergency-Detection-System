@@ -19,4 +19,5 @@ class AppRoutes {
   static const String permissionCenter = '/permission-center';
   static const String demoCenter = '/demo-center';
   static const String aboutProject = '/about-project';
+  static const String safetyMap = '/safety-map';
 }
