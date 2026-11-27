@@ -1,0 +1,17 @@
+model_name,actual_class,predicted_class,count
+Random Forest,crash_candidate,crash_candidate,90
+Random Forest,crash_candidate,fall_like,0
+Random Forest,crash_candidate,normal,0
+Random Forest,crash_candidate,unusual_movement,0
+Random Forest,fall_like,crash_candidate,0
+Random Forest,fall_like,fall_like,90
+Random Forest,fall_like,normal,0
+Random Forest,fall_like,unusual_movement,0
+Random Forest,normal,crash_candidate,0
+Random Forest,normal,fall_like,0
+Random Forest,normal,normal,2947
+Random Forest,normal,unusual_movement,0
+Random Forest,unusual_movement,crash_candidate,0
+Random Forest,unusual_movement,fall_like,0
+Random Forest,unusual_movement,normal,0
+Random Forest,unusual_movement,unusual_movement,180

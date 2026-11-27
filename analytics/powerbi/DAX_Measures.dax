@@ -1,0 +1,119 @@
+// SOSense Power BI DAX Measures (Pages 1 - 5)
+// Import CSVs from analytics/exports/ first.
+
+// ============================================================
+// PAGE 1: Executive Overview
+// ============================================================
+Total Sensor Events = COUNTROWS('fact_sensor_events')
+
+Normal Sensor Events =
+CALCULATE(
+    COUNTROWS('fact_sensor_events'),
+    'fact_sensor_events'[event_category] = "normal"
+)
+
+Potential Emergency Sensor Events =
+CALCULATE(
+    COUNTROWS('fact_sensor_events'),
+    'fact_sensor_events'[event_category] <> "normal"
+)
+
+Total Incidents Logged = COUNTROWS('fact_incidents')
+
+Confirmed Alerts =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[status] IN {"dispatched", "acknowledged", "escalated", "resolved"}
+)
+
+Canceled Alerts =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[status] = "cancelled"
+)
+
+Unanswered Alerts =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[status] IN {"dispatched", "escalated"},
+    ISBLANK('fact_incidents'[ack_latency_seconds])
+)
+
+Average Acknowledgement Time (Sec) =
+AVERAGE('fact_incidents'[ack_latency_seconds])
+
+Incident False Alarm Rate (%) =
+DIVIDE(
+    CALCULATE(COUNTROWS('fact_incidents'), 'fact_incidents'[is_false_alarm] = 1),
+    COUNTROWS('fact_incidents'),
+    0
+)
+
+// ============================================================
+// PAGE 2: Sensor Analytics
+// ============================================================
+Mean Acc Magnitude (m/s2) = AVERAGE('fact_sensor_events'[acc_mag_mean])
+Peak Acc Magnitude (m/s2) = MAX('fact_sensor_events'[acc_mag_max])
+Mean Gyro Magnitude (rad/s) = AVERAGE('fact_sensor_events'[gyro_mag_mean])
+Peak Gyro Magnitude (rad/s) = MAX('fact_sensor_events'[gyro_mag_max])
+Avg Orientation Change (Deg) = AVERAGE('fact_sensor_events'[orientation_change_deg])
+
+// ============================================================
+// PAGE 3: Emergency Analytics
+// ============================================================
+Fall Candidate Events =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[event_type] = "possible_fall"
+)
+
+Accident Candidate Events =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[event_type] = "possible_accident"
+)
+
+Manual SOS Events =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[event_type] = "manual_sos"
+)
+
+Avg Detection Confidence = AVERAGE('fact_incidents'[detection_confidence])
+
+// ============================================================
+// PAGE 4: Family Response Analytics
+// ============================================================
+Notifications Dispatched = COUNTROWS('fact_notifications')
+
+Notifications Acknowledged =
+CALCULATE(
+    COUNTROWS('fact_notifications'),
+    'fact_notifications'[acknowledged] = 1
+)
+
+Notifications Unacknowledged =
+CALCULATE(
+    COUNTROWS('fact_notifications'),
+    'fact_notifications'[acknowledged] = 0
+)
+
+Notification Ack Rate (%) =
+DIVIDE([Notifications Acknowledged], [Notifications Dispatched], 0)
+
+Escalated Incidents =
+CALCULATE(
+    COUNTROWS('fact_incidents'),
+    'fact_incidents'[escalation_triggered] = 1
+)
+
+Escalation Rate (%) =
+DIVIDE([Escalated Incidents], [Total Incidents Logged], 0)
+
+// ============================================================
+// PAGE 5: ML Performance
+// ============================================================
+Best Model Macro F1 = MAX('ml_model_comparison'[macro_f1])
+Best Model Accuracy = MAX('ml_model_comparison'[test_accuracy])
+Lowest False Positive Rate = MIN('ml_model_comparison'[false_positive_rate])
+Lowest Missed Emergency Rate = MIN('ml_model_comparison'[false_negative_rate])
