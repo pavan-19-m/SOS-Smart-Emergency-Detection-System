@@ -1,0 +1,43 @@
+{
+  "datasets": [
+    {
+      "id": "uci_har_smartphones",
+      "name": "Human Activity Recognition Using Smartphones (UCI HAR)",
+      "source_url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00240/UCI%20HAR%20Dataset.zip",
+      "license": "CC BY 4.0",
+      "sampling_frequency_hz": 50,
+      "window_samples": 128,
+      "window_duration_sec": 2.56,
+      "num_subjects": 30,
+      "activities": [
+        "WALKING",
+        "WALKING_UPSTAIRS",
+        "WALKING_DOWNSTAIRS",
+        "SITTING",
+        "STANDING",
+        "LAYING"
+      ],
+      "contains_real_accidents": false,
+      "contains_real_falls": false,
+      "role_in_pipeline": "Stage 1 baseline normal-activity & motion-pattern dataset (real smartphone accelerometer + gyroscope at 50 Hz)"
+    },
+    {
+      "id": "sosense_controlled_synthetic",
+      "name": "SOSense Physics-Informed Synthetic & Controlled Anomaly Windows",
+      "source_url": "local://data_science/scripts/02_build_sensor_corpus.py",
+      "license": "MIT",
+      "sampling_frequency_hz": 50,
+      "window_samples": 128,
+      "window_duration_sec": 2.56,
+      "activities": [
+        "FALL_LIKE",
+        "CRASH_CANDIDATE",
+        "UNUSUAL_ROTATION",
+        "PROLONGED_INACTIVITY"
+      ],
+      "contains_real_accidents": false,
+      "contains_real_falls": false,
+      "role_in_pipeline": "Explicitly labeled synthetic/controlled physics-modeled emergency candidate windows for pipeline validation & non-normal class benchmarking. NEVER presented as real-world crash data."
+    }
+  ]
+}

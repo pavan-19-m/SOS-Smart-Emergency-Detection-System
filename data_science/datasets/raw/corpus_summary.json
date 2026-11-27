@@ -1,0 +1,27 @@
+{
+  "total_windows": 11499,
+  "real_uci_windows": 10299,
+  "controlled_sim_windows": 1200,
+  "activity_counts": {
+    "LAYING": 1944,
+    "STANDING": 1906,
+    "SITTING": 1777,
+    "WALKING": 1722,
+    "WALKING_UPSTAIRS": 1544,
+    "WALKING_DOWNSTAIRS": 1406,
+    "FALL_LIKE": 300,
+    "CRASH_CANDIDATE": 300,
+    "UNUSUAL_ROTATION": 300,
+    "PROLONGED_INACTIVITY": 300
+  },
+  "event_category_counts": {
+    "normal": 10299,
+    "unusual_movement": 600,
+    "fall_like": 300,
+    "crash_candidate": 300
+  },
+  "split_counts": {
+    "train": 8192,
+    "test": 3307
+  }
+}

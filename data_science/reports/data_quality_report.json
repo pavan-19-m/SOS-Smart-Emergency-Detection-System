@@ -1,0 +1,50 @@
+{
+  "before_cleaning": {
+    "row_count": 11499,
+    "missing_metadata_cells": 0,
+    "non_finite_acc_values": 0,
+    "non_finite_gyro_values": 0,
+    "physically_invalid_acc_windows": 0,
+    "physically_invalid_gyro_windows": 0,
+    "duplicate_signal_windows": 0,
+    "duplicate_window_ids": 0,
+    "invalid_timestamps": 0,
+    "inconsistent_sampling_windows": 0,
+    "iqr_upper_fence_acc_max_ms2": 28.9352,
+    "statistical_high_peak_windows": 779,
+    "event_category_distribution": {
+      "normal": 10299,
+      "unusual_movement": 600,
+      "fall_like": 300,
+      "crash_candidate": 300
+    },
+    "imbalance_ratio_max_to_min": 34.33
+  },
+  "after_cleaning": {
+    "row_count": 11499,
+    "missing_metadata_cells": 0,
+    "non_finite_acc_values": 0,
+    "non_finite_gyro_values": 0,
+    "physically_invalid_acc_windows": 0,
+    "physically_invalid_gyro_windows": 0,
+    "duplicate_signal_windows": 0,
+    "duplicate_window_ids": 0,
+    "invalid_timestamps": 0,
+    "inconsistent_sampling_windows": 0,
+    "iqr_upper_fence_acc_max_ms2": 28.9352,
+    "statistical_high_peak_windows": 779,
+    "event_category_distribution": {
+      "normal": 10299,
+      "unusual_movement": 600,
+      "fall_like": 300,
+      "crash_candidate": 300
+    },
+    "imbalance_ratio_max_to_min": 34.33
+  },
+  "cleaning_actions": {
+    "rows_removed": 0,
+    "filter_type": "4th-order zero-phase Butterworth low-pass (cutoff=20 Hz, fs=50 Hz)",
+    "removed_noise_rms_ms2": 0.04177,
+    "outliers_retained_rationale": "High-magnitude statistical outliers (IQR > fence) are deliberately retained because genuine impact/fall/crash-candidate events manifest as extreme peak accelerations."
+  }
+}

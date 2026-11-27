@@ -1,0 +1,714 @@
+{
+  "Q1": {
+    "sql": "SELECT\n    data_source,\n    event_category,\n    COUNT(*) AS total_windows,\n    ROUND(AVG(acc_mag_max), 3) AS avg_peak_acc_ms2,\n    ROUND(MAX(acc_mag_max), 3) AS max_peak_acc_ms2,\n    ROUND(AVG(gyro_mag_max), 3) AS avg_peak_gyro_rads\nFROM sensor_events\nGROUP BY data_source, event_category\nORDER BY total_windows DESC",
+    "row_count": 4,
+    "rows": [
+      {
+        "data_source": "uci_har_public_real",
+        "event_category": "normal",
+        "total_windows": 10299,
+        "avg_peak_acc_ms2": 13.488,
+        "max_peak_acc_ms2": 25.632,
+        "avg_peak_gyro_rads": 0.93
+      },
+      {
+        "data_source": "controlled_physics_simulation",
+        "event_category": "unusual_movement",
+        "total_windows": 600,
+        "avg_peak_acc_ms2": 21.524,
+        "max_peak_acc_ms2": 53.526,
+        "avg_peak_gyro_rads": 4.366
+      },
+      {
+        "data_source": "controlled_physics_simulation",
+        "event_category": "crash_candidate",
+        "total_windows": 300,
+        "avg_peak_acc_ms2": 70.039,
+        "max_peak_acc_ms2": 101.183,
+        "avg_peak_gyro_rads": 11.57
+      },
+      {
+        "data_source": "controlled_physics_simulation",
+        "event_category": "fall_like",
+        "total_windows": 300,
+        "avg_peak_acc_ms2": 39.556,
+        "max_peak_acc_ms2": 59.333,
+        "avg_peak_gyro_rads": 7.709
+      }
+    ]
+  },
+  "Q2": {
+    "sql": "SELECT\n    CASE WHEN event_category = 'normal' THEN 'Normal' ELSE 'Potential Emergency' END AS classification_group,\n    COUNT(*) AS event_count,\n    ROUND(100.0 * COUNT(*) / (SELECT COUNT(*) FROM sensor_events), 2) AS pct_share\nFROM sensor_events\nGROUP BY classification_group",
+    "row_count": 2,
+    "rows": [
+      {
+        "classification_group": "Normal",
+        "event_count": 10299,
+        "pct_share": 89.56
+      },
+      {
+        "classification_group": "Potential Emergency",
+        "event_count": 1200,
+        "pct_share": 10.44
+      }
+    ]
+  },
+  "Q3": {
+    "sql": "SELECT\n    event_type,\n    is_simulation,\n    COUNT(*) AS incident_count,\n    SUM(CASE WHEN status = 'acknowledged' THEN 1 ELSE 0 END) AS acknowledged_count,\n    SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_count,\n    SUM(CASE WHEN status = 'escalated' THEN 1 ELSE 0 END) AS escalated_count,\n    SUM(CASE WHEN is_false_alarm = 1 THEN 1 ELSE 0 END) AS false_alarm_count\nFROM incident_logs\nGROUP BY event_type, is_simulation\nORDER BY incident_count DESC",
+    "row_count": 5,
+    "rows": [
+      {
+        "event_type": "unusual_movement",
+        "is_simulation": 1,
+        "incident_count": 200,
+        "acknowledged_count": 122,
+        "cancelled_count": 33,
+        "escalated_count": 24,
+        "false_alarm_count": 38
+      },
+      {
+        "event_type": "possible_fall",
+        "is_simulation": 1,
+        "incident_count": 110,
+        "acknowledged_count": 56,
+        "cancelled_count": 30,
+        "escalated_count": 13,
+        "false_alarm_count": 32
+      },
+      {
+        "event_type": "possible_accident",
+        "is_simulation": 1,
+        "incident_count": 90,
+        "acknowledged_count": 55,
+        "cancelled_count": 9,
+        "escalated_count": 14,
+        "false_alarm_count": 9
+      },
+      {
+        "event_type": "manual_sos",
+        "is_simulation": 1,
+        "incident_count": 20,
+        "acknowledged_count": 18,
+        "cancelled_count": 0,
+        "escalated_count": 2,
+        "false_alarm_count": 0
+      },
+      {
+        "event_type": "missed_check_in",
+        "is_simulation": 1,
+        "incident_count": 20,
+        "acknowledged_count": 15,
+        "cancelled_count": 0,
+        "escalated_count": 5,
+        "false_alarm_count": 0
+      }
+    ]
+  },
+  "Q4": {
+    "sql": "SELECT\n    substr(timestamp_utc, 1, 10) AS event_date,\n    COUNT(*) AS total_incidents,\n    SUM(CASE WHEN status IN ('dispatched', 'acknowledged', 'escalated', 'resolved') THEN 1 ELSE 0 END) AS confirmed_or_dispatched,\n    SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS user_cancelled\nFROM incident_logs\nGROUP BY event_date\nORDER BY event_date ASC",
+    "row_count": 30,
+    "rows": [
+      {
+        "event_date": "2026-10-15",
+        "total_incidents": 13,
+        "confirmed_or_dispatched": 9,
+        "user_cancelled": 4
+      },
+      {
+        "event_date": "2026-10-16",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-10-17",
+        "total_incidents": 16,
+        "confirmed_or_dispatched": 16,
+        "user_cancelled": 0
+      },
+      {
+        "event_date": "2026-10-18",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 15,
+        "user_cancelled": 0
+      },
+      {
+        "event_date": "2026-10-19",
+        "total_incidents": 16,
+        "confirmed_or_dispatched": 14,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-10-20",
+        "total_incidents": 16,
+        "confirmed_or_dispatched": 15,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-21",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 10,
+        "user_cancelled": 4
+      },
+      {
+        "event_date": "2026-10-22",
+        "total_incidents": 18,
+        "confirmed_or_dispatched": 16,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-10-23",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-24",
+        "total_incidents": 17,
+        "confirmed_or_dispatched": 16,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-25",
+        "total_incidents": 16,
+        "confirmed_or_dispatched": 14,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-10-26",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 14,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-27",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-28",
+        "total_incidents": 16,
+        "confirmed_or_dispatched": 15,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-29",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 15,
+        "user_cancelled": 0
+      },
+      {
+        "event_date": "2026-10-30",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-10-31",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 14,
+        "user_cancelled": 1
+      },
+      {
+        "event_date": "2026-11-01",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 15,
+        "user_cancelled": 0
+      },
+      {
+        "event_date": "2026-11-02",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-11-03",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 12,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-11-04",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 12,
+        "user_cancelled": 3
+      },
+      {
+        "event_date": "2026-11-05",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-11-06",
+        "total_incidents": 14,
+        "confirmed_or_dispatched": 14,
+        "user_cancelled": 0
+      },
+      {
+        "event_date": "2026-11-07",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 2
+      },
+      {
+        "event_date": "2026-11-08",
+        "total_incidents": 15,
+        "confirmed_or_dispatched": 13,
+        "user_cancelled": 2
+      }
+    ]
+  },
+  "Q5": {
+    "sql": "SELECT\n    strftime('%Y-W%W', timestamp_utc) AS iso_week,\n    COUNT(*) AS weekly_incidents,\n    SUM(CASE WHEN event_type = 'possible_fall' THEN 1 ELSE 0 END) AS fall_candidates,\n    SUM(CASE WHEN event_type = 'possible_accident' THEN 1 ELSE 0 END) AS accident_candidates,\n    SUM(CASE WHEN event_type = 'manual_sos' THEN 1 ELSE 0 END) AS manual_sos_count\nFROM incident_logs\nGROUP BY iso_week\nORDER BY iso_week ASC",
+    "row_count": 5,
+    "rows": [
+      {
+        "iso_week": "2026-W41",
+        "weekly_incidents": 59,
+        "fall_candidates": 52,
+        "accident_candidates": 0,
+        "manual_sos_count": 4
+      },
+      {
+        "iso_week": "2026-W42",
+        "weekly_incidents": 111,
+        "fall_candidates": 38,
+        "accident_candidates": 58,
+        "manual_sos_count": 8
+      },
+      {
+        "iso_week": "2026-W43",
+        "weekly_incidents": 104,
+        "fall_candidates": 0,
+        "accident_candidates": 32,
+        "manual_sos_count": 3
+      },
+      {
+        "iso_week": "2026-W44",
+        "weekly_incidents": 103,
+        "fall_candidates": 0,
+        "accident_candidates": 0,
+        "manual_sos_count": 4
+      },
+      {
+        "iso_week": "2026-W45",
+        "weekly_incidents": 63,
+        "fall_candidates": 20,
+        "accident_candidates": 0,
+        "manual_sos_count": 1
+      }
+    ]
+  },
+  "Q6": {
+    "sql": "SELECT\n    strftime('%Y-%m', timestamp_utc) AS year_month,\n    COUNT(*) AS monthly_incidents,\n    ROUND(AVG(detection_confidence), 3) AS avg_confidence\nFROM incident_logs\nGROUP BY year_month\nORDER BY year_month ASC",
+    "row_count": 2,
+    "rows": [
+      {
+        "year_month": "2026-10",
+        "monthly_incidents": 259,
+        "avg_confidence": 0.876
+      },
+      {
+        "year_month": "2026-11",
+        "monthly_incidents": 181,
+        "avg_confidence": 0.77
+      }
+    ]
+  },
+  "Q7": {
+    "sql": "SELECT\n    event_type,\n    COUNT(*) AS total_detected,\n    SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) AS cancelled_by_user,\n    ROUND(100.0 * SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END) / COUNT(*), 2) AS cancellation_rate_pct,\n    SUM(CASE WHEN is_false_alarm = 1 THEN 1 ELSE 0 END) AS confirmed_false_alarms,\n    ROUND(100.0 * SUM(CASE WHEN is_false_alarm = 1 THEN 1 ELSE 0 END) / COUNT(*), 2) AS false_alarm_rate_pct\nFROM incident_logs\nGROUP BY event_type\nORDER BY cancellation_rate_pct DESC",
+    "row_count": 5,
+    "rows": [
+      {
+        "event_type": "possible_fall",
+        "total_detected": 110,
+        "cancelled_by_user": 30,
+        "cancellation_rate_pct": 27.27,
+        "confirmed_false_alarms": 32,
+        "false_alarm_rate_pct": 29.09
+      },
+      {
+        "event_type": "unusual_movement",
+        "total_detected": 200,
+        "cancelled_by_user": 33,
+        "cancellation_rate_pct": 16.5,
+        "confirmed_false_alarms": 38,
+        "false_alarm_rate_pct": 19.0
+      },
+      {
+        "event_type": "possible_accident",
+        "total_detected": 90,
+        "cancelled_by_user": 9,
+        "cancellation_rate_pct": 10.0,
+        "confirmed_false_alarms": 9,
+        "false_alarm_rate_pct": 10.0
+      },
+      {
+        "event_type": "missed_check_in",
+        "total_detected": 20,
+        "cancelled_by_user": 0,
+        "cancellation_rate_pct": 0.0,
+        "confirmed_false_alarms": 0,
+        "false_alarm_rate_pct": 0.0
+      },
+      {
+        "event_type": "manual_sos",
+        "total_detected": 20,
+        "cancelled_by_user": 0,
+        "cancellation_rate_pct": 0.0,
+        "confirmed_false_alarms": 0,
+        "false_alarm_rate_pct": 0.0
+      }
+    ]
+  },
+  "Q8": {
+    "sql": "SELECT\n    event_type,\n    COUNT(*) AS acknowledged_alerts,\n    ROUND(AVG(ack_latency_seconds), 2) AS avg_ack_seconds,\n    MIN(ack_latency_seconds) AS min_ack_seconds,\n    MAX(ack_latency_seconds) AS max_ack_seconds\nFROM incident_logs\nWHERE ack_latency_seconds IS NOT NULL\nGROUP BY event_type\nORDER BY avg_ack_seconds ASC",
+    "row_count": 5,
+    "rows": [
+      {
+        "event_type": "missed_check_in",
+        "acknowledged_alerts": 15,
+        "avg_ack_seconds": 43.07,
+        "min_ack_seconds": 12.0,
+        "max_ack_seconds": 80.0
+      },
+      {
+        "event_type": "manual_sos",
+        "acknowledged_alerts": 18,
+        "avg_ack_seconds": 56.83,
+        "min_ack_seconds": 16.0,
+        "max_ack_seconds": 94.0
+      },
+      {
+        "event_type": "unusual_movement",
+        "acknowledged_alerts": 131,
+        "avg_ack_seconds": 77.2,
+        "min_ack_seconds": 18.0,
+        "max_ack_seconds": 233.0
+      },
+      {
+        "event_type": "possible_fall",
+        "acknowledged_alerts": 68,
+        "avg_ack_seconds": 83.69,
+        "min_ack_seconds": 18.0,
+        "max_ack_seconds": 236.0
+      },
+      {
+        "event_type": "possible_accident",
+        "acknowledged_alerts": 65,
+        "avg_ack_seconds": 84.34,
+        "min_ack_seconds": 18.0,
+        "max_ack_seconds": 214.0
+      }
+    ]
+  },
+  "Q9": {
+    "sql": "SELECT\n    incident_id,\n    event_type,\n    status,\n    timestamp_utc,\n    contacts_notified_count,\n    escalation_triggered\nFROM incident_logs\nWHERE status IN ('dispatched', 'escalated', 'unanswered')\n  AND ack_latency_seconds IS NULL\nORDER BY timestamp_utc DESC\nLIMIT 25",
+    "row_count": 25,
+    "rows": [
+      {
+        "incident_id": "INC-0360",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-10T10:14:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0354",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-09T23:36:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0352",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-09T20:56:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0346",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-09T09:48:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0340",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-08T23:26:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0335",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-08T14:46:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0331",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-08T07:36:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0424",
+        "event_type": "missed_check_in",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-07T16:00:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0321",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-07T14:07:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0320",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-07T12:21:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0314",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-07T01:03:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0310",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-06T18:21:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0304",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-06T08:06:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0303",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-06T06:45:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0422",
+        "event_type": "missed_check_in",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-05T23:00:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0291",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-05T09:12:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0288",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-05T04:56:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0278",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-11-04T10:45:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      },
+      {
+        "incident_id": "INC-0277",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-04T09:32:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0265",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-03T12:22:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0238",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-01T12:10:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0236",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-11-01T09:28:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0221",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-10-31T07:40:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0212",
+        "event_type": "unusual_movement",
+        "status": "escalated",
+        "timestamp_utc": "2026-10-30T15:39:00+00:00",
+        "contacts_notified_count": 2,
+        "escalation_triggered": 1
+      },
+      {
+        "incident_id": "INC-0209",
+        "event_type": "unusual_movement",
+        "status": "dispatched",
+        "timestamp_utc": "2026-10-30T10:13:00+00:00",
+        "contacts_notified_count": 1,
+        "escalation_triggered": 0
+      }
+    ]
+  },
+  "Q10": {
+    "sql": "SELECT\n    recipient_priority,\n    COUNT(*) AS notifications_sent,\n    SUM(CASE WHEN acknowledged = 1 THEN 1 ELSE 0 END) AS notifications_acknowledged,\n    ROUND(100.0 * SUM(CASE WHEN acknowledged = 1 THEN 1 ELSE 0 END) / COUNT(*), 2) AS ack_rate_pct,\n    ROUND(AVG(CASE WHEN acknowledged = 1 THEN response_seconds END), 2) AS avg_response_seconds\nFROM notifications_log\nGROUP BY recipient_priority",
+    "row_count": 2,
+    "rows": [
+      {
+        "recipient_priority": "primary",
+        "notifications_sent": 368,
+        "notifications_acknowledged": 266,
+        "ack_rate_pct": 72.28,
+        "avg_response_seconds": 65.11
+      },
+      {
+        "recipient_priority": "secondary",
+        "notifications_sent": 51,
+        "notifications_acknowledged": 31,
+        "ack_rate_pct": 60.78,
+        "avg_response_seconds": 181.81
+      }
+    ]
+  },
+  "Q11": {
+    "sql": "SELECT\n    actual_event,\n    random_forest_pred,\n    COUNT(*) AS window_count,\n    ROUND(AVG(random_forest_conf), 4) AS avg_confidence\nFROM test_predictions\nGROUP BY actual_event, random_forest_pred\nORDER BY actual_event, window_count DESC",
+    "row_count": 4,
+    "rows": [
+      {
+        "actual_event": "crash_candidate",
+        "random_forest_pred": "crash_candidate",
+        "window_count": 90,
+        "avg_confidence": 0.997
+      },
+      {
+        "actual_event": "fall_like",
+        "random_forest_pred": "fall_like",
+        "window_count": 90,
+        "avg_confidence": 0.9952
+      },
+      {
+        "actual_event": "normal",
+        "random_forest_pred": "normal",
+        "window_count": 2947,
+        "avg_confidence": 0.9997
+      },
+      {
+        "actual_event": "unusual_movement",
+        "random_forest_pred": "unusual_movement",
+        "window_count": 180,
+        "avg_confidence": 0.9933
+      }
+    ]
+  },
+  "Q12": {
+    "sql": "SELECT\n    model_name,\n    test_accuracy,\n    macro_precision,\n    macro_recall,\n    macro_f1,\n    false_positive_rate,\n    false_negative_rate\nFROM ml_model_metrics\nORDER BY macro_f1 DESC",
+    "row_count": 5,
+    "rows": [
+      {
+        "model_name": "Decision Tree",
+        "test_accuracy": 1.0,
+        "macro_precision": 1.0,
+        "macro_recall": 1.0,
+        "macro_f1": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      },
+      {
+        "model_name": "Random Forest",
+        "test_accuracy": 1.0,
+        "macro_precision": 1.0,
+        "macro_recall": 1.0,
+        "macro_f1": 1.0,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.0
+      },
+      {
+        "model_name": "XGBoost",
+        "test_accuracy": 0.9997,
+        "macro_precision": 0.99992,
+        "macro_recall": 0.99722,
+        "macro_f1": 0.99856,
+        "false_positive_rate": 0.0,
+        "false_negative_rate": 0.00278
+      },
+      {
+        "model_name": "Logistic Regression",
+        "test_accuracy": 0.96462,
+        "macro_precision": 0.90152,
+        "macro_recall": 0.98738,
+        "macro_f1": 0.93226,
+        "false_positive_rate": 0.03936,
+        "false_negative_rate": 0.0
+      },
+      {
+        "model_name": "Rule-Based Baseline",
+        "test_accuracy": 0.82945,
+        "macro_precision": 0.71425,
+        "macro_recall": 0.81836,
+        "macro_f1": 0.69611,
+        "false_positive_rate": 0.17102,
+        "false_negative_rate": 0.00833
+      }
+    ]
+  }
+}
