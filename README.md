@@ -71,6 +71,20 @@ flowchart LR
 - **Real-Only 6-Class UCI HAR Activity Benchmark (2,947 unseen real windows):** Random Forest achieved **77.54% accuracy** and **0.7768 Macro F1** across unseen subjects.
 - **Unsupervised Isolation Forest (fit only on real normal UCI HAR windows):** **96.43% precision**, **75.00% recall**, **0.34% FPR** (misses static `PROLONGED_INACTIVITY` because it overlaps stationary `SITTING`/`LAYING` clusters).
 
+### Generated Analytics & ML Charts
+
+| Model Comparison | Random Forest Confusion Matrix |
+|---|---|
+| ![Model Comparison](data_science/visualizations/model_comparison_metrics.png) | ![Confusion Matrix](data_science/visualizations/confusion_matrix_random_forest.png) |
+
+| Feature Importance | Safety Error Tradeoff (FPR vs FNR) |
+|---|---|
+| ![Feature Importance](data_science/visualizations/feature_importance_rf.png) | ![False Alarm vs Missed Emergency](data_science/visualizations/false_alarm_vs_missed_emergency.png) |
+
+| Class Imbalance | Sensor Waveforms (50 Hz) |
+|---|---|
+| ![Class Imbalance](data_science/visualizations/eda_class_imbalance.png) | ![Sensor Waveforms](data_science/visualizations/eda_normal_vs_anomaly_waveforms.png) |
+
 ---
 
 ## Setup & Execution Instructions
