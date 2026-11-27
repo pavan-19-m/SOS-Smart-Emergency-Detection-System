@@ -1,0 +1,133 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function hasNoForbiddenSecretFields(data) {
+      return !('password' in data)
+        && !('passwordHash' in data)
+        && !('rawPassword' in data)
+        && !('secretToken' in data);
+    }
+
+    function isValidIncidentStatus(status) {
+      return status in [
+        'pending_verification',
+        'active',
+        'dispatched',
+        'acknowledged',
+        'escalated',
+        'cancelled',
+        'resolved',
+        'false_alarm',
+        'queued_offline'
+      ];
+    }
+
+    function isAuthorizedContact(incidentData) {
+      return isSignedIn() && (
+        (incidentData.authorizedContactUids is list && request.auth.uid in incidentData.authorizedContactUids) ||
+        (request.auth.token.email != null &&
+         incidentData.authorizedContactEmails is list &&
+         request.auth.token.email in incidentData.authorizedContactEmails)
+      );
+    }
+
+    // User profile & preferences (never store passwords in Firestore)
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && hasNoForbiddenSecretFields(request.resource.data)
+        && request.resource.data.uid == userId;
+      allow update: if isOwner(userId)
+        && hasNoForbiddenSecretFields(request.resource.data)
+        && request.resource.data.uid == userId;
+      allow delete: if isOwner(userId);
+
+      // Trusted family & emergency contacts subcollection
+      match /contacts/{contactId} {
+        allow read: if isOwner(userId)
+          || (isSignedIn() && resource.data.linkedUid == request.auth.uid);
+        allow create, update: if isOwner(userId)
+          && request.resource.data.name is string
+          && request.resource.data.name.size() >= 1
+          && request.resource.data.name.size() <= 100
+          && request.resource.data.priority in ['primary', 'secondary'];
+        allow delete: if isOwner(userId);
+      }
+    }
+
+    // Emergency & sensor-detected incidents
+    match /incidents/{incidentId} {
+      allow read: if isOwner(resource.data.userId)
+        || isAuthorizedContact(resource.data);
+
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.eventType is string
+        && isValidIncidentStatus(request.resource.data.status)
+        && request.resource.data.isSimulation is bool
+        && hasNoForbiddenSecretFields(request.resource.data);
+
+      allow update: if (
+          isOwner(resource.data.userId)
+          && request.resource.data.userId == resource.data.userId
+          && isValidIncidentStatus(request.resource.data.status)
+          && hasNoForbiddenSecretFields(request.resource.data)
+        ) || (
+          isAuthorizedContact(resource.data)
+          && request.resource.data.diff(resource.data).affectedKeys()
+              .hasOnly(['status', 'acknowledgedBy', 'acknowledgedAt', 'updatedAt'])
+          && request.resource.data.status in ['acknowledged', 'resolved']
+        );
+
+      allow delete: if isOwner(resource.data.userId);
+    }
+
+    // Safe check-in / travel monitoring sessions
+    match /safety_sessions/{sessionId} {
+      allow read: if isOwner(resource.data.userId)
+        || (isSignedIn() && resource.data.sharedWithUids is list && request.auth.uid in resource.data.sharedWithUids);
+
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status in ['active', 'extended', 'completed', 'missed', 'escalated'];
+
+      allow update: if isOwner(resource.data.userId)
+        && request.resource.data.userId == resource.data.userId;
+
+      allow delete: if isOwner(resource.data.userId);
+    }
+
+    // Notifications log: created exclusively by Cloud Functions (Admin SDK)
+    match /notifications/{notificationId} {
+      allow read: if isSignedIn() && (
+        resource.data.recipientUid == request.auth.uid ||
+        resource.data.senderUid == request.auth.uid
+      );
+      allow create, delete: if false;
+      allow update: if isSignedIn()
+        && resource.data.recipientUid == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['readAt', 'deliveryState']);
+    }
+
+    // Pseudonymized analytics records (strictly non-PII)
+    match /analytics_anonymized/{recordId} {
+      allow create: if isSignedIn()
+        && !('email' in request.resource.data)
+        && !('phone' in request.resource.data)
+        && !('displayName' in request.resource.data)
+        && !('latitude' in request.resource.data)
+        && !('longitude' in request.resource.data);
+      allow read, update, delete: if false;
+    }
+  }
+}
