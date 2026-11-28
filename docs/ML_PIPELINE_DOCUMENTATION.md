@@ -1,0 +1,5 @@
+# ML pipeline in the laptop app
+
+The Python training/export workflow and model documentation already exist under `data_science/` and `docs/reports/`. Flutter loads the serialized `RandomForestClassifier` bundle and scaler. Its 20 features derive from a 128-sample, 50 Hz inertial window. The browser's `web/src/sensor-engine.mjs` ports that schema and computation; the local Node endpoint uses the same exported tree arrays and scaler rather than a second fitted or fabricated classifier.
+
+Web parity tests compare predictions against the committed test export. The API reports model label, supported confidence and measured local inference duration, and marks every input as simulated. Available benchmark reports include controlled synthetic anomaly classes and real UCI HAR activity classification. No real-world emergency accuracy is claimed. See [model evaluation](reports/MODEL_EVALUATION.md), [feature engineering](reports/FEATURE_ENGINEERING.md), and [ML model documentation](reports/ML_MODEL_DOCUMENTATION.md).

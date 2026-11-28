@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1a2b">
+  <meta name="description" content="SOSense laptop dashboard and isolated sensor simulation laboratory">
+  <title>SOSense · Safety workspace</title>
+  <link rel="stylesheet" href="/src/styles.css">
+  <script type="module" src="/src/app.js"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand"><div class="brand-mark">S</div><div><strong>SOSense</strong><span>SAFETY WORKSPACE</span></div></div>
+      <div class="workspace-chip"><span class="pulse-dot"></span><span>LOCAL DEMO MODE</span></div>
+      <nav class="navigation" aria-label="Main navigation">
+        <p class="nav-label">WORKSPACE</p>
+        <button class="nav-item active" data-page="overview"><span class="nav-icon">⌂</span> Overview</button>
+        <button class="nav-item" data-page="safety"><span class="nav-icon">◎</span> Safety map <span class="nav-pill">DATA</span></button>
+        <button class="nav-item" data-page="analytics"><span class="nav-icon">▥</span> Analytics</button>
+        <button class="nav-item" data-page="sensor"><span class="nav-icon">⌁</span> Sensor lab <span class="nav-pill teal">SIM</span></button>
+        <button class="nav-item" data-page="emergency"><span class="nav-icon">✳</span> Emergency test</button>
+        <button class="nav-item" data-page="journey"><span class="nav-icon">↗</span> Journey simulator</button>
+        <button class="nav-item" data-page="incidents"><span class="nav-icon">☷</span> Incident history</button>
+        <p class="nav-label nav-space">SETTINGS</p>
+        <button class="nav-item" data-page="contacts"><span class="nav-icon">♧</span> Profile & contacts</button>
+        <button class="nav-item" data-page="model"><span class="nav-icon">◈</span> Model & data</button>
+        <button class="nav-item" data-page="diagnostics"><span class="nav-icon">⌘</span> Diagnostics</button>
+      </nav>
+      <div class="sidebar-bottom"><div class="avatar">S</div><div class="side-user"><strong id="side-user-name">Local user</strong><span>Browser workspace</span></div><span class="local-lock" title="Data stays on this laptop">▣</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Open navigation">☰</button>
+        <div class="breadcrumbs"><span>SOSENSE</span><b>/</b><strong id="page-crumb">Overview</strong></div>
+        <div class="top-actions"><span class="top-status"><span class="status-dot"></span><span id="connection-label">Checking local services</span></span><button class="icon-button" data-page="diagnostics" title="Diagnostics">⌘</button><div class="top-avatar" id="top-avatar">S</div></div>
+      </header>
+      <div id="content" class="content" aria-live="polite"><div class="loading-state"><span class="spinner"></span> Loading local workspace…</div></div>
+    </main>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="verification-dialog" class="verification-dialog">
+    <div class="dialog-topline"><span class="warning-icon">!</span><span class="simulation-tag">SIMULATION ONLY</span></div>
+    <h2 id="verification-title">Potential anomaly detected</h2>
+    <p id="verification-description">Potential anomaly from simulated sensor input. No real emergency has been detected.</p>
+    <div class="countdown"><strong id="countdown-value">10</strong><span>seconds to respond</span></div>
+    <div class="dialog-actions"><button class="button secondary" id="cancel-emergency">I’m okay · cancel</button><button class="button danger" id="confirm-emergency">Confirm simulated SOS</button></div>
+    <p class="dialog-footnote">Test event only. No SMS, email, push notification, or emergency contact will be reached.</p>
+  </dialog>
+</body>
+</html>

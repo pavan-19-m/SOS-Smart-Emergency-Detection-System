@@ -1,0 +1,17 @@
+{
+  "name": "sosense-local-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node web/server.cjs",
+    "dev": "node web/server.cjs",
+    "check": "node --check web/server.cjs && node --check web/src/app.js && node --check web/src/sensor-engine.mjs && node --check web/src/sensor-scenarios.mjs",
+    "test": "node --test web/test/*.test.mjs",
+    "test:backend": "npm --prefix backend/functions test",
+    "test:python": ".venv\\Scripts\\python.exe -m pytest tests -q"
+  }
+}

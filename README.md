@@ -8,6 +8,17 @@
 
 ## Key Features
 
+### Laptop browser workspace
+
+The local web workspace adds a laptop dashboard and **SIMULATED SENSOR DATA — NOT FROM A REAL DEVICE** lab without installing web dependencies. With Node.js 18 or newer, run `start_sos.bat` or `npm start`, then open [http://localhost:3000](http://localhost:3000). It includes actual bundled-model inference, bounded sensor scenarios, local emergency/countdown exercises, a safety-data availability view, journeys, local contact labels, incident history, model information and diagnostics. Browser simulation is isolated from Firebase, FCM, SMS and email. Test data is memory-only and disappears when the local server restarts.
+
+See [Local Setup](docs/LOCAL_SETUP_GUIDE.md), [Dashboard Guide](docs/WEB_DASHBOARD_GUIDE.md), and [Project Audit](docs/PROJECT_AUDIT.md). The source-supported safety aggregates currently do not provide map coordinates; the map must not be interpreted as displaying incident points.
+
+- Start browser workspace: `npm start`
+- Web checks: `npm run check` and `npm test`
+- Existing backend tests: `npm run test:backend`
+- Existing Python suite: `npm run test:python`
+
 - **Mobile Safety Application (`mobile_app/`, Flutter + Material 3):**
   - 20 complete screens covering authentication, dashboard, manual SOS (tap or press-and-hold + countdown), live sensor & ML monitoring, family contact management (primary/secondary priorities), safe check-in journeys, GPS location tracking, incident history, permission diagnostics, and a safe 10-scenario Demo Center.
   - **On-Device ML Inference:** Pure-Dart Random Forest traversal (`sosense_inference_bundle.json`) runs locally without depending on a remote Python server.
